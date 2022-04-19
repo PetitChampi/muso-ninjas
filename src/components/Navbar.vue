@@ -6,9 +6,13 @@
         <router-link :to="{ name: 'home' }">Muso Ninjas</router-link>
       </h1>
       <div class="links">
-        <button @click="handleClick">Log out</button>
-        <router-link class="btn" :to="{ name: 'signup' }">Sign up</router-link>
-        <router-link class="btn" :to="{ name: 'login' }">Log in</router-link>
+        <div v-if="user">
+          <button @click="handleClick">Log out</button>
+        </div>
+        <div v-else>
+          <router-link class="btn" :to="{ name: 'signup' }">Sign up</router-link>
+          <router-link class="btn" :to="{ name: 'login' }">Log in</router-link>
+        </div>
       </div>
     </nav>
   </div>
@@ -16,10 +20,12 @@
 
 <script>
 import useLogout from '@/composables/useLogout'
+import getUser from '@/composables/getUser'
 import { useRouter } from 'vue-router'
 
 export default {
   setup() {
+    const { user } = getUser()
     const { logout } = useLogout()
     const router = useRouter()
 
@@ -29,7 +35,7 @@ export default {
       router.push({ name: 'login' })
     }
 
-    return { handleClick }
+    return { handleClick, user }
   }
 }
 </script>
